@@ -26,8 +26,6 @@ jobs:
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: test
 
       # Step 2: Run Snyk to check vulnerabilities in application code (static analysis)
       - name: Run Snyk static code analysis (snyk code test)
