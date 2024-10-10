@@ -1,0 +1,14 @@
+
+{
+  "name": "vulnerable-nodejs-app",
+  "version": "1.0.0",
+  "description": "A sample Node.js app with vulnerabilities for Snyk demo",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",  
+    "lodash": "4.17.15"   
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
