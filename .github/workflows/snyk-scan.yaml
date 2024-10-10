@@ -29,7 +29,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # Step 2: Run Snyk to check vulnerabilities in application code (static analysis)
-      - name: Run Snyk test for dependencies (package.json)
+      - name: Run Snyk test for custom code (app.js)
         uses: snyk/actions/node@master
         continue-on-error: true
         env:
@@ -39,13 +39,16 @@ jobs:
 
       # Step 3: Build Docker image
       - name: Build Docker image
-        run: docker build -t sample-node:v1 .
+        run: docker build -t sample-node-app:v1 .
 
       # Step 4: Run Snyk to check for vulnerabilities in Docker image
       - name: Run Snyk test for Docker image
-        run: snyk test --docker sample-node:v1 --file=Dockerfile
+        uses: snyk/actions/node@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --docker sample-node-app:v1 --file=Dockerfile
 
       # Step 5: Run Snyk IaC scan
       - name: Run Snyk IaC test
