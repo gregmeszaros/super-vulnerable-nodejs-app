@@ -1,0 +1,47 @@
+name: Snyk Security Scan (Global install)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      # Step 1: Install Snyk CLI
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      # Step 2: Authenticate Snyk
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      # Step 3: Run Snyk to check for vulnerabilities in package dependencies
+      - name: Run Snyk test for dependencies (package.json)
+        run: snyk test
+
+      # Step 4: Run Snyk static code analysis (snyk code test)
+      - name: Run Snyk static code analysis (snyk code test)
+        run: snyk code test
+
+      # Step 5: Build Docker image
+      - name: Build Docker image
+        run: docker build -t sample-node-app:v1 .
+
+      # Step 6: Run Snyk to check for vulnerabilities in Docker image
+      - name: Run Snyk test for Docker image
+        run: snyk test --docker sample-node-app:v1 --file=Dockerfile
+
+      # Step 7: Run Snyk IaC scan
+      - name: Run Snyk IaC test
+        run: snyk iac test iac/

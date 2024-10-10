@@ -52,6 +52,9 @@ jobs:
 
       # Step 5: Run Snyk IaC scan
       - name: Run Snyk IaC test
-        run: snyk iac test iac/
+        uses: snyk/actions/node@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: iac test iac/
