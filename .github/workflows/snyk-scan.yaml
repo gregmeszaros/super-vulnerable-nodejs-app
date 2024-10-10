@@ -1,28 +1,18 @@
-name: Snyk Test Workflow
+name: Snyk Node.js SCAN
 on: push
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Snyk to check for vulnerabilities (imported libraries)
-        uses: snyk/actions/node@master
+      - name: Snyk scan custom code
+        run: snyk test code
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Run Snyk to check for vulnerabilities in custom code
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: test
