@@ -1,6 +1,6 @@
 
 # Vulnerable Dockerfile (Privilege escalation issue)
-FROM node:14
+FROM node:20.18
 
 # Using root user, which is a bad security practice
 USER root
